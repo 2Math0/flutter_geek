@@ -1,3 +1,4 @@
+
 ### Lecture: Understanding Isolates and Compute in Flutter
 
 #### Table of Contents
@@ -83,7 +84,7 @@ void main() {
 | **Execution Context**         | Runs in a separate Dart isolate, isolated from the main UI thread.           | Executes a function in a background isolate, but returns the result to the UI thread. |
 | **Communication**             | Uses `SendPort` and `ReceivePort` for bidirectional communication between isolates. | Provides a simpler API for running functions in isolates without direct communication. |
 | **Use Case**                  | Ideal for long-running tasks such as complex computations or I/O operations. | Suitable for isolated tasks that do not require continuous communication.   |
-| **Complexity**                 | Requires explicit management of `SendPort` and `ReceivePort` for communication. | Abstracts isolate management, simplifying the execution of functions in background isolates. |
+| **Complexity**                | Requires explicit management of `SendPort` and `ReceivePort` for communication. | Abstracts isolate management, simplifying the execution of functions in background isolates. |
 
 ### ReceivePort and SendPort Explained <a name="receiveport-and-sendport-explained"></a>
 
@@ -106,6 +107,29 @@ void main() {
 - **Network Requests**: Perform network operations like HTTP requests in isolates to prevent blocking the main UI thread.
 
 - **Data Processing**: Parse, manipulate, or process large datasets asynchronously in isolates.
+
+### Passing Multiple Arguments to Isolates
+
+You can pass multiple arguments to isolates by bundling them into a single data structure, such as a list or a map. Here’s an example:
+
+```dart
+import 'dart:isolate';
+
+void isolateEntryPoint(List<dynamic> args) {
+  String message = args[0];
+  int number = args[1];
+
+  print('Message received in isolate: $message');
+  print('Number received in isolate: $number');
+}
+
+void main() async {
+  ReceivePort mainReceivePort = ReceivePort();
+  Isolate isolate = await Isolate.spawn(isolateEntryPoint, ['Hello from main', 42]);
+
+  // Handle isolate communication here
+}
+```
 
 ### Conclusion <a name="conclusion"></a>
 
