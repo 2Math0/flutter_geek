@@ -60,14 +60,10 @@ GetMaterialApp(
   initialRoute: '/',
   getPages: [
     GetPage(name: '/', page: () => HomeScreen()),
-    GetPage(name: '/details', page: () => DetailsScreen()),
-  ],
-  // Middleware example
-  middleware: [
-    (handler) {
-      print('Handling ${handler.name}');
-      return handler();
-    }
+    GetPage(name: '/details', page: () => DetailsScreen(),
+    // Middleware Example
+      middlewares:[DetailsMiddleware],
+  ),
   ],
 );
 ```
