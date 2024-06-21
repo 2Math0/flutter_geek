@@ -48,29 +48,22 @@ void main() {
 }
 ```
 
-### Using Isolate.run <a name="using-isolate-run"></a>
+## Using Isolate.run <a name="using-isolate-run"></a>
 
 Alternatively, you can use `Isolate.run()` to run a function within an isolate and obtain the result synchronously:
 
 ```dart
 import 'dart:isolate';
 
-void isolateFunction(SendPort sendPort) {
+String isolateFunction() {
   // Perform computationally expensive task here
   String result = 'Result of the task';
-
-  sendPort.send(result);
+  return result;
 }
 
 void main() async {
-  ReceivePort receivePort = ReceivePort();
-  Isolate isolate = await Isolate.spawn(isolateFunction, receivePort.sendPort);
-
-  receivePort.listen((message) {
-    print(message); // Output: Result of the task
-    receivePort.close();
-    isolate.kill();
-  });
+  String result = await Isolate.run(isolateFunction);
+  print(result); // Output: Result of the task
 }
 ```
 
